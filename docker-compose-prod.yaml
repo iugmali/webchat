@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  webchat:
+    build:
+      context: .
+    container_name: webchat
+    restart: always
+    networks:
+      - nginx-proxy-manager_default
+
+networks:
+  nginx-proxy-manager_default:
+    external: true

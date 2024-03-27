@@ -1,0 +1,19 @@
+# Guarantee that every request redirects to '/'
+
+GET {{HostAddress}}
+
+###
+
+POST {{HostAddress}}
+
+###
+
+PATCH {{HostAddress}}
+
+###
+
+DELETE {{HostAddress}}
+
+###
+
+POST {{HostAddress}}/somegibberishinformation/anothergibberishinformation

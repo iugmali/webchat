@@ -1,0 +1,29 @@
+{
+  "name": "webchat",
+  "version": "0.0.1",
+  "description": "Criação de um aplicativo de chat com websockets",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx --env-file=.env src/app.ts",
+    "build": "npm run clean && tsc -b && npm run copy",
+    "start": "node --env-file=.env dist/src/app.js",
+    "clean": "rimraf dist",
+    "copy": "copyfiles -u l src/**/*.handlebars src/**/**/*.handlebars src/**/*.css src/**/*.js dist",
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "Guilherme",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-handlebars": "^7.1.2",
+    "socket.io": "^4.7.5"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "copyfiles": "^2.4.1",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.4.3",
+    "vitest": "^1.4.0"
+  }
+}
