@@ -39,6 +39,7 @@ Swal.fire({
   },
 }).then((result) => {
   user = result.value;
+  chatbox.focus();
 
   window.addEventListener('unload', () => {
     socket.emit('leave', user);
@@ -50,6 +51,7 @@ Swal.fire({
       if (!message) return;
       socket.emit('message', {author: user, message});
       chatbox.value = '';
+      chatbox.focus()
     }
   });
 
@@ -57,9 +59,10 @@ Swal.fire({
     Swal.fire({
       text: `${name} entrou na sala`,
       color: 'white',
-      confirmButtonColor: '#351151',
+      showConfirmButton: false,
       background: '#340634',
       timer: 3000,
+      timerProgressBar: true,
       toast: true,
       position: 'top-right'
     });
@@ -69,9 +72,10 @@ Swal.fire({
     Swal.fire({
       text: `A sua mensagem "${message}" foi censurada`,
       color: 'white',
-      confirmButtonColor: '#351151',
+      showConfirmButton: false,
       background: '#340634',
-      timer: 3000,
+      timer: 1500,
+      timerProgressBar: true,
       toast: true,
       position: 'top-right'
     });

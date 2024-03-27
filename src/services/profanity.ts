@@ -6,7 +6,6 @@ type Configuration = {
   placeHolder?: string;
   replaceRegex?: RegExp;
   separatorRegex?: RegExp;
-  excludeWords?: string[];
   wordsList?: string[];
 }
 
@@ -21,9 +20,8 @@ class Profanity {
       level: 1,
       enabled: true,
       placeHolder: '*',
-      replaceRegex: /[\wÀ-ž]/g,
-      separatorRegex: /[\w\-ÁÃÍÓAÂÊáíúóãàâê]+|[^\w\s]|\s+/g,
-      excludeWords: []
+      replaceRegex: /[\w\-À-ž]/g,
+      separatorRegex: /[\w\-À-ž]+|[^\w\s]|\s+/g
     };
     this.phrase = !inputStr || inputStr.length < 1 ? '' : inputStr;
     this.config = { ...configDefaults, ...config };
@@ -35,7 +33,7 @@ class Profanity {
       this.censuredPhrase = this.phrase;
       return this;
     }
-    const separatorRegex = this.config?.separatorRegex ?? /[\w\-ÁÃÍÓAÂÊáíúóãàâê]+|[^\w\s]|\s+/g;
+    const separatorRegex = this.config?.separatorRegex ?? /[\w\-À-ž]+|[^\w\s]|\s+/g;
     this.censuredPhrase = this.phrase
       .match(separatorRegex)
       ?.map((value) => {
@@ -67,8 +65,8 @@ class Profanity {
       return;
     }
     return this.wordlist.filter((word) => {
-      const regex = new RegExp(`\\b${word.replace(/(\W)/g, '\\$1')}\\b`, 'gi');
-      return !this.config?.excludeWords?.includes(word.toLowerCase()) && regex.test(value);
+      const regex = new RegExp(`\\b${word.replace(/([^\wÀ-ź])/, '')}\\b`, 'gi');
+      return regex.test(value);
     }).length > 0;
   }
 }
