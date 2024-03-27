@@ -2,6 +2,8 @@
 
 Aplicativo de chat em tempo real utilizando Node.js, Express, e Socket.io.
 
+Versão em produção disponível em [https://webchat.iugmali.com/](https://webchat.iugmali.com/).
+
 ## Rodando o projeto
 
 ```bash
