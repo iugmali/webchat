@@ -16,4 +16,4 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           key: ${{ secrets.PRIVATE_KEY }}
-          script: '/app/webchat/deploy.sh'
+          script: '. /app/webchat/deploy.sh'
