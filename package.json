@@ -4,7 +4,7 @@
   "description": "Criação de um aplicativo de chat com websockets",
   "type": "module",
   "scripts": {
-    "dev": "tsx --env-file=.env src/app.ts",
+    "dev": "tsx watch --env-file=.env src/app.ts",
     "build": "npm run clean && tsc -b && npm run copy",
     "start": "node --env-file=.env dist/src/app.js",
     "clean": "rimraf dist",
