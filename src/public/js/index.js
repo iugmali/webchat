@@ -32,10 +32,15 @@ Swal.fire({
       if (!response.ok) {
         Swal.showValidationMessage(`Usuário não existe no github`);
       } else {
-        socket.emit('join', login);
+        const checkuserexists = await fetch('/checkuserexists', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({username: login})});
+        if (!checkuserexists.ok) {
+          Swal.showValidationMessage(`${login} já está conectado na sala`);
+        } else {
+          socket.emit('join', login);
+        }
       }
     } catch (error) {
-      Swal.showValidationMessage(`Usuário não existe no github`);
+      Swal.showValidationMessage(error.message);
     }
   },
 }).then((result) => {
