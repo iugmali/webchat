@@ -6,19 +6,19 @@ describe("Profanity", () => {
   let profanity: Profanity;
   beforeEach(() => {
     profanity = new Profanity();
-  })
-  it("should censure a word", () => {
-    const word = badWords[Math.floor(Math.random() * badWords.length)];
-    const censored = profanity.isProfane(word);
+  });
+  it("should censure a word from the bad words dictionary", () => {
+    const badWord = badWords[Math.floor(Math.random() * badWords.length)];
+    const censored = profanity.isProfane(badWord);
     expect(censored).toBe(true);
-    const expectedCensored = '*'.repeat(word.length);
-    expect(profanity.censor(word)).toBe(expectedCensored);
-  })
+    const expectedCensored = '*'.repeat(badWord.length);
+    expect(profanity.censor(badWord)).toBe(expectedCensored);
+  });
   it("should maintain not profane words in a sentence", () => {
-    const word = badWords[Math.floor(Math.random() * badWords.length)];
-    const phrase = `This is a phrase with a ${word} in it`;
-    const expectedCensoredWord = '*'.repeat(word.length);
+    const badWord = badWords[Math.floor(Math.random() * badWords.length)];
+    const phrase = `This is a phrase with a ${badWord} in it`;
+    const expectedCensoredWord = '*'.repeat(badWord.length);
     const expectedCensoredPhrase = `This is a phrase with a ${expectedCensoredWord} in it`;
     expect(profanity.censor(phrase)).toBe(expectedCensoredPhrase);
-  })
-})
+  });
+});
