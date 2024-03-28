@@ -34,16 +34,17 @@ io.on('connection', (socket) => {
   io.emit('usersQty', usersQty);
   socket.on('join', (username: string) => {
     message = {author: 'iugmali-webchat-server', message: `${username} entrou na sala` };
-    const usersQty = io.engine.clientsCount
     io.emit('message', message);
     io.emit('join', username);
-    io.emit('usersQty', usersQty);
   });
-  socket.on('leave', (username: string) => {
+  socket.on('leave', async (username: string) => {
     message = {author: 'iugmali-webchat-server', message: `${username} saiu da sala` };
-    const usersQty = io.engine.clientsCount
+    await new Promise((res, rej) => setTimeout(() => {
+      const usersQty = io.engine.clientsCount
+      io.emit('usersQty', usersQty);
+      res(true)
+    }, 1500));
     io.emit('message', message);
-    io.emit('usersQty', usersQty);
   });
   socket.on('message', (userMessage: Message) => {
     const word = censorWord(userMessage.message);
