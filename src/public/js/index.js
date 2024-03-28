@@ -91,7 +91,7 @@ Swal.fire({
 
     const msgElem = document.createElement('div');
     msgElem.className = 'message';
-    msgElem.innerHTML = message.author === 'ajhdjhaksdhaushdiua' ? `<span class="system">${message.message}</span>` : `<a href="https://github.com/${message.author}"><strong>${message.author}:</strong></a> ${message.message}`;
+    msgElem.innerHTML = message.author === 'iugmali-webchat-server' ? `<span class="system">${message.message}</span>` : `<a href="https://github.com/${message.author}"><strong>${message.author}:</strong></a> ${message.message}`;
 
     messagesList.appendChild(msgElem);
     messagesList.scrollTop = messagesList.scrollHeight;
