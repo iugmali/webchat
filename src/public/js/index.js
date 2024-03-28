@@ -42,10 +42,6 @@ Swal.fire({
   user = result.value;
   chatbox.focus();
 
-  window.addEventListener('pagehide', () => {
-    socket.emit('leave', user);
-  });
-
   sendButton.addEventListener('click', () => {
     const message = chatbox.value.trim();
     if (!message) return;

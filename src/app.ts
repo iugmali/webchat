@@ -18,7 +18,13 @@ type Message = {
   message: string;
 }
 
+type User = {
+  id: string;
+  username: string;
+}
+
 let message: Message = {author: '', message: ''};
+const users: Set<User> = new Set();
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
@@ -34,17 +40,9 @@ io.on('connection', (socket) => {
     message = {author: 'iugmali-webchat-server', message: `${username} entrou na sala` };
     io.emit('message', message);
     io.emit('join', username);
+    users.add({id: socket.id, username: username});
     const usersQty = io.engine.clientsCount
     io.emit('usersQty', usersQty);
-  });
-  socket.on('leave', async (username: string) => {
-    message = {author: 'iugmali-webchat-server', message: `${username} saiu da sala` };
-    io.emit('message', message);
-    await new Promise((res, rej) => setTimeout(() => {
-      const usersQty = io.engine.clientsCount
-      io.emit('usersQty', usersQty);
-      res(true)
-    }, 1500));
   });
   socket.on('message', (userMessage: Message) => {
     const word = censorWord(userMessage.message);
@@ -59,6 +57,12 @@ io.on('connection', (socket) => {
     io.emit('message', message);
   });
   socket.on('disconnect', () => {
+    const user = Array.from(users).find(user => user.id === socket.id);
+    if (user) {
+      message = {author: 'iugmali-webchat-server', message: `${user.username} saiu da sala` };
+      io.emit('message', message);
+      users.delete(user);
+    }
     const usersQty = io.engine.clientsCount
     io.emit('usersQty', usersQty);
   });
