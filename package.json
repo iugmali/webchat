@@ -8,7 +8,7 @@
     "build": "npm run clean && tsc -b && npm run copy",
     "start": "node --env-file=.env dist/src/app.js",
     "clean": "rimraf dist",
-    "copy": "copyfiles -u l src/**/*.handlebars src/**/**/*.handlebars src/**/*.css src/**/*.js dist",
+    "copy": "copyfiles -u l src/**/*.handlebars src/**/**/*.handlebars src/**/*.ico src/**/*.css src/**/*.js dist",
     "test": "vitest"
   },
   "keywords": [],
