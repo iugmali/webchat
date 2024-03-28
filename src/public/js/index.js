@@ -2,7 +2,7 @@ const socket = io();
 
 const chatbox = document.getElementById('chatbox');
 const users = document.getElementById('users');
-
+const sendButton = document.getElementById('send');
 let user;
 
 Swal.fire({
@@ -42,8 +42,16 @@ Swal.fire({
   user = result.value;
   chatbox.focus();
 
-  window.addEventListener('unload', () => {
+  window.addEventListener('pagehide', () => {
     socket.emit('leave', user);
+  });
+
+  sendButton.addEventListener('click', () => {
+    const message = chatbox.value.trim();
+    if (!message) return;
+    socket.emit('message', {author: user, message});
+    chatbox.value = '';
+    chatbox.focus()
   });
 
   chatbox.addEventListener('keyup', (event) => {
@@ -88,11 +96,9 @@ Swal.fire({
 
   socket.on('message', (message) => {
     const messagesList = document.getElementById('messages');
-
     const msgElem = document.createElement('div');
     msgElem.className = 'message';
     msgElem.innerHTML = message.author === 'iugmali-webchat-server' ? `<span class="system">${message.message}</span>` : `<a href="https://github.com/${message.author}"><strong>${message.author}:</strong></a> ${message.message}`;
-
     messagesList.appendChild(msgElem);
     messagesList.scrollTop = messagesList.scrollHeight;
   });

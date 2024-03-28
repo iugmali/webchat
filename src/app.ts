@@ -30,21 +30,21 @@ app.use(express.json());
 app.use(express.static(join(__dirname, 'public')));
 
 io.on('connection', (socket) => {
-  const usersQty = io.engine.clientsCount
-  io.emit('usersQty', usersQty);
   socket.on('join', (username: string) => {
     message = {author: 'iugmali-webchat-server', message: `${username} entrou na sala` };
     io.emit('message', message);
     io.emit('join', username);
+    const usersQty = io.engine.clientsCount
+    io.emit('usersQty', usersQty);
   });
   socket.on('leave', async (username: string) => {
     message = {author: 'iugmali-webchat-server', message: `${username} saiu da sala` };
+    io.emit('message', message);
     await new Promise((res, rej) => setTimeout(() => {
       const usersQty = io.engine.clientsCount
       io.emit('usersQty', usersQty);
       res(true)
     }, 1500));
-    io.emit('message', message);
   });
   socket.on('message', (userMessage: Message) => {
     const word = censorWord(userMessage.message);
@@ -57,6 +57,10 @@ io.on('connection', (socket) => {
     const usersQty = io.engine.clientsCount
     io.emit('usersQty', usersQty);
     io.emit('message', message);
+  });
+  socket.on('disconnect', () => {
+    const usersQty = io.engine.clientsCount
+    io.emit('usersQty', usersQty);
   });
 });
 
