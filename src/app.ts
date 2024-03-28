@@ -18,9 +18,7 @@ type Message = {
   message: string;
 }
 
-io.disconnectSockets(true);
 let message: Message = {author: '', message: ''};
-let usersQty = 0;
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
@@ -33,15 +31,15 @@ app.use(express.static(join(__dirname, 'public')));
 
 io.on('connection', (socket) => {
   socket.on('join', (username: string) => {
-    message = {author: 'ajhdjhaksdhaushdiua', message: `${username} entrou na sala` };
-    usersQty++;
+    message = {author: 'iugmali-webchat-server', message: `${username} entrou na sala` };
+    const usersQty = io.engine.clientsCount
     io.emit('message', message);
     io.emit('join', username);
     io.emit('usersQty', usersQty);
   });
   socket.on('leave', (username: string) => {
-    message = {author: 'ajhdjhaksdhaushdiua', message: `${username} saiu da sala` };
-    usersQty--;
+    message = {author: 'iugmali-webchat-server', message: `${username} saiu da sala` };
+    const usersQty = io.engine.clientsCount
     io.emit('message', message);
     io.emit('usersQty', usersQty);
   });
