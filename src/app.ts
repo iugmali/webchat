@@ -72,6 +72,16 @@ app.get('/', (req, res) => {
   res.render('index', { title: 'Chat' });
 });
 
+app.post('/checkuserexists', (req, res) => {
+  const { username } = req.body;
+  const userExists = Array.from(users).find(user => user.username === username);
+  if (userExists) {
+    res.status(400).send();
+  } else {
+    res.status(200).send();
+  }
+});
+
 app.use(/.*/, (req, res) => {
   req.method = 'GET';
   res.redirect('/');

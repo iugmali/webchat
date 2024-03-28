@@ -17,3 +17,12 @@ DELETE {{HostAddress}}
 ###
 
 POST {{HostAddress}}/somegibberishinformation/anothergibberishinformation
+
+###
+
+POST {{HostAddress}}/checkuserexists
+Content-Type: application/json
+
+{
+    "username": "testuser"
+}
