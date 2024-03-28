@@ -19,6 +19,7 @@ type Message = {
 }
 
 let message: Message = {author: '', message: ''};
+let usersQty = 0;
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
@@ -32,12 +33,16 @@ app.use(express.static(join(__dirname, 'public')));
 io.on('connection', (socket) => {
   socket.on('join', (username: string) => {
     message = {author: 'ajhdjhaksdhaushdiua', message: `${username} entrou na sala` };
+    usersQty++;
     io.emit('message', message);
     io.emit('join', username);
+    io.emit('usersQty', usersQty);
   });
   socket.on('leave', (username: string) => {
     message = {author: 'ajhdjhaksdhaushdiua', message: `${username} saiu da sala` };
+    usersQty--;
     io.emit('message', message);
+    io.emit('usersQty', usersQty);
   });
   socket.on('message', (userMessage: Message) => {
     const word = censorWord(userMessage.message);
