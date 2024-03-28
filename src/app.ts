@@ -18,6 +18,7 @@ type Message = {
   message: string;
 }
 
+io.disconnectSockets(true);
 let message: Message = {author: '', message: ''};
 let usersQty = 0;
 
