@@ -1,6 +1,7 @@
 const socket = io();
 
 const chatbox = document.getElementById('chatbox');
+const users = document.getElementById('users');
 
 let user;
 
@@ -53,6 +54,10 @@ Swal.fire({
       chatbox.value = '';
       chatbox.focus()
     }
+  });
+
+  socket.on('usersQty', (qty) => {
+    users.innerHTML = `Usuários online: ${qty}`;
   });
 
   socket.on('join', (name) => {

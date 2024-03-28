@@ -1,20 +1,32 @@
-# webchat
+# WEBCHAT
 
-Aplicativo de chat em tempo real utilizando Node.js, Express, e Socket.io.
+Aplicativo web de chat em tempo real construído com Node.js, Express, e Socket.io em typescript.
 
-Versão em produção disponível em [https://webchat.iugmali.com/](https://webchat.iugmali.com/).
+## Versão em produção em [https://webchat.iugmali.com/](https://webchat.iugmali.com).
 
-## Rodando o projeto
+## Setup
 
 ```bash
 npm install
+```
+
+## Rodando em desenvolvimento
+
+```bash
 npm run dev
 ```
 
-## Rodando o projeto em docker
+## Rodando em produção
+
+```bash
+npm run build
+npm start
+```
+
+## Rodando com Docker
 
 ```bash
 docker-compose up -d
 ```
 
-A aplicação estará disponível em `http://localhost:8080`.
+Aplicação estará disponível em `http://localhost:8080`
