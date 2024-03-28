@@ -30,6 +30,8 @@ app.use(express.json());
 app.use(express.static(join(__dirname, 'public')));
 
 io.on('connection', (socket) => {
+  const usersQty = io.engine.clientsCount
+  io.emit('usersQty', usersQty);
   socket.on('join', (username: string) => {
     message = {author: 'iugmali-webchat-server', message: `${username} entrou na sala` };
     const usersQty = io.engine.clientsCount
@@ -51,6 +53,8 @@ io.on('connection', (socket) => {
     } else {
       message = {author: userMessage.author, message: userMessage.message};
     }
+    const usersQty = io.engine.clientsCount
+    io.emit('usersQty', usersQty);
     io.emit('message', message);
   });
 });
