@@ -57,7 +57,7 @@ Swal.fire({
   });
 
   socket.on('usersQty', (qty) => {
-    users.innerHTML = `Usuários online: ${qty}`;
+    users.innerHTML = `usuários conectados: ${qty}`;
   });
 
   socket.on('join', (name) => {
