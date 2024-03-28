@@ -5,7 +5,7 @@ import { createServer } from 'node:http';
 import { Server } from "socket.io";
 
 import { engine } from "express-handlebars";
-import {censorWord, FilteredWord} from "./lib/util.js";
+import {censorWord} from "./lib/util.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -74,7 +74,10 @@ app.get('/', (req, res) => {
 
 app.post('/checkuserexists', (req, res) => {
   const { username } = req.body;
-  const userExists = Array.from(users).find(user => user.username === username);
+  const userExists = Array.from(users).find(user => {
+    const regex = new RegExp(`^${username}$`, 'i');
+    return regex.test(user.username);
+  });
   if (userExists) {
     res.status(400).send();
   } else {
