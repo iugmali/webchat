@@ -1,32 +1,28 @@
-# Testes de endpoints - rodar em IDE
-# Rodar com env development e production
+// Descomente a linha abaixo caso não tenha o arquivo http-client.env.json configurado
+// @HostAddress= http://localhost:8080
 
-# Deve retornar 200 e html
+### GetMain
+// Deve retornar 200 e html
 GET {{HostAddress}}
 
-###
-
-# Deve retornar 200 e html
+### PostMain
+// Deve retornar 200 e html
 POST {{HostAddress}}
 
-###
-
-# Deve retornar 302 Found - Redirecting to /
+### PatchMain
+// Deve retornar 302 Found - Redirecting to /
 PATCH {{HostAddress}}
 
-###
-
-# Deve retornar 200 e html
+### DeleteMain
+// Deve retornar 200 e html
 DELETE {{HostAddress}}
 
-###
-
-# Deve retornar 200 e html
+### PostToRandomRoute
+// Deve retornar 200 e html
 POST {{HostAddress}}/somegibberishinformation/anothergibberishinformation
 
-###
-
-# Deve retornar 400 - não é nome válido
+### PostUserCheckNotValid
+// Deve retornar 400 - não é nome válido
 POST {{HostAddress}}/usercheck
 Content-Type: application/json
 
@@ -34,10 +30,9 @@ Content-Type: application/json
     "username": "shit"
 }
 
-###
-
-# Deve retornar 204 caso não exista um usuário com o nome logado
-# Deve retornar 403 caso exista um usuário com o nome logado
+### PostUserCheck
+// Deve retornar 204 caso não exista um usuário com o nome logado
+// Deve retornar 403 caso exista um usuário com o nome logado
 POST {{HostAddress}}/usercheck
 Content-Type: application/json
 
