@@ -5,7 +5,7 @@ import { createServer } from 'node:http';
 import { Server } from "socket.io";
 
 import { engine } from "express-handlebars";
-import {censorWord} from "./lib/util.js";
+import {censorWord, isProfane} from "./lib/util.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -16,6 +16,7 @@ const io = new Server(server);
 type Message = {
   author: string;
   message: string;
+  color?: string;
 }
 
 type User = {
@@ -38,8 +39,8 @@ app.use(express.static(join(__dirname, 'public')));
 io.on('connection', (socket) => {
   socket.on('join', (username: string) => {
     message = {author: 'iugmali-webchat-server', message: `${username} entrou na sala` };
-    io.emit('message', message);
-    io.emit('join', username);
+    socket.broadcast.emit('message', message);
+    socket.broadcast.emit('join', username);
     users.add({id: socket.id, username: username});
     const usersQty = io.engine.clientsCount
     io.emit('usersQty', usersQty);
@@ -72,16 +73,18 @@ app.get('/', (req, res) => {
   res.render('index', { title: 'Chat' });
 });
 
-app.post('/checkuserexists', (req, res) => {
+app.post('/usercheck', (req, res) => {
   const { username } = req.body;
   const userExists = Array.from(users).find(user => {
     const regex = new RegExp(`^${username}$`, 'i');
     return regex.test(user.username);
   });
-  if (userExists) {
+  if (!userExists && !isProfane(username)) {
+    res.status(204).send();
+  } else if (isProfane(username)) {
     res.status(400).send();
   } else {
-    res.status(200).send();
+    res.status(403).send();
   }
 });
 

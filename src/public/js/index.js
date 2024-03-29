@@ -3,13 +3,14 @@ const socket = io();
 const chatbox = document.getElementById('chatbox');
 const users = document.getElementById('users');
 const sendButton = document.getElementById('send');
+
 let user;
 
 Swal.fire({
-  title: 'Digite seu username',
+  title: 'Seu nome',
   input: 'text',
   inputValidator: (value) => {
-    return !value && 'Você precisa digitar um nome de usuário do github';
+    return !value && 'Você precisa digitar um nome';
   },
   inputAttributes: {
     autocapitalize: 'off'
@@ -25,19 +26,17 @@ Swal.fire({
   showLoaderOnConfirm: true,
   preConfirm: async (login) => {
     try {
-      const githubUrl = `
-        https://api.github.com/users/${login}
-      `;
-      const response = await fetch(githubUrl);
-      if (!response.ok) {
-        Swal.showValidationMessage(`Usuário não existe no github`);
-      } else {
-        const checkuserexists = await fetch('/checkuserexists', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({username: login})});
-        if (!checkuserexists.ok) {
-          Swal.showValidationMessage(`${login} já está conectado na sala`);
-        } else {
-          socket.emit('join', login);
-        }
+      const response = await fetch('/usercheck', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username: login})
+      });
+      if (response.status === 204) {
+        socket.emit('join', login);
+      } else if (response.status === 400) {
+        Swal.showValidationMessage(`${login} não é um nome válido`);
+      } else if (response.status === 403) {
+        Swal.showValidationMessage(`${login} já está conectado na sala`);
       }
     } catch (error) {
       Swal.showValidationMessage(error.message);
@@ -99,7 +98,7 @@ Swal.fire({
     const messagesList = document.getElementById('messages');
     const msgElem = document.createElement('div');
     msgElem.className = 'message';
-    msgElem.innerHTML = message.author === 'iugmali-webchat-server' ? `<span class="system">${message.message}</span>` : `<a href="https://github.com/${message.author}"><strong>${message.author}:</strong></a> ${message.message}`;
+    msgElem.innerHTML = message.author === 'iugmali-webchat-server' ? `<span class="system">${message.message}</span>` : `<strong>${message.author}:</strong> ${message.message}`;
     messagesList.appendChild(msgElem);
     messagesList.scrollTop = messagesList.scrollHeight;
   });
