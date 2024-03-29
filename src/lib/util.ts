@@ -5,6 +5,11 @@ export type FilteredWord = {
   censored: boolean;
 }
 
+export const isProfane = (word: string): boolean => {
+  const profanity = new Profanity();
+  return profanity.isProfane(word);
+}
+
 export const censorWord = (word: string): FilteredWord => {
   const profanity = new Profanity();
   if (profanity.isProfane(word)) {
