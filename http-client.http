@@ -1,26 +1,44 @@
-# Guarantee that every request redirects to '/'
+# Testes de endpoints - rodar em IDE
+# Rodar com env development e production
 
+# Deve retornar 200 e html
 GET {{HostAddress}}
 
 ###
 
+# Deve retornar 200 e html
 POST {{HostAddress}}
 
 ###
 
+# Deve retornar 302 Found - Redirecting to /
 PATCH {{HostAddress}}
 
 ###
 
+# Deve retornar 200 e html
 DELETE {{HostAddress}}
 
 ###
 
+# Deve retornar 200 e html
 POST {{HostAddress}}/somegibberishinformation/anothergibberishinformation
 
 ###
 
-POST {{HostAddress}}/checkuserexists
+# Deve retornar 400 - não é nome válido
+POST {{HostAddress}}/usercheck
+Content-Type: application/json
+
+{
+    "username": "shit"
+}
+
+###
+
+# Deve retornar 204 caso não exista um usuário com o nome logado
+# Deve retornar 403 caso exista um usuário com o nome logado
+POST {{HostAddress}}/usercheck
 Content-Type: application/json
 
 {
