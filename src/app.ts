@@ -15,7 +15,8 @@ const io = new Server(server);
 
 type Message = {
   author: string;
-  message: string;
+  text: string;
+  timestamp?: Date;
   color?: string;
 }
 
@@ -24,7 +25,7 @@ type User = {
   username: string;
 }
 
-let message: Message = {author: '', message: ''};
+let message: Message = {author: '', text: ''};
 const users: Set<User> = new Set();
 
 app.engine('handlebars', engine());
@@ -38,7 +39,7 @@ app.use(express.static(join(__dirname, 'public')));
 
 io.on('connection', (socket) => {
   socket.on('join', (username: string) => {
-    message = {author: 'iugmali-webchat-server', message: `${username} entrou na sala` };
+    message = {author: 'iugmali-webchat-server', text: `${username} entrou na sala`, timestamp: new Date()};
     socket.broadcast.emit('message', message);
     socket.broadcast.emit('join', username);
     users.add({id: socket.id, username: username});
@@ -46,12 +47,12 @@ io.on('connection', (socket) => {
     io.emit('usersQty', usersQty);
   });
   socket.on('message', (userMessage: Message) => {
-    const word = censorWord(userMessage.message);
+    const word = censorWord(userMessage.text);
     if (word.censored) {
-      message = {author: userMessage.author, message: word.word};
-      io.to(socket.id).emit('censored', userMessage.message);
+      message = {author: userMessage.author, text: word.word, timestamp: new Date()};
+      io.to(socket.id).emit('censored', userMessage.text);
     } else {
-      message = {author: userMessage.author, message: userMessage.message};
+      message = {author: userMessage.author, text: userMessage.text, timestamp: new Date()};
     }
     const usersQty = io.engine.clientsCount
     io.emit('usersQty', usersQty);
@@ -60,7 +61,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     const user = Array.from(users).find(user => user.id === socket.id);
     if (user) {
-      message = {author: 'iugmali-webchat-server', message: `${user.username} saiu da sala` };
+      message = {author: 'iugmali-webchat-server', text: `${user.username} saiu da sala`, timestamp: new Date()};
       io.emit('message', message);
       users.delete(user);
     }

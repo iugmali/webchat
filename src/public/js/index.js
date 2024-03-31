@@ -47,18 +47,18 @@ Swal.fire({
   chatbox.focus();
 
   sendButton.addEventListener('click', () => {
-    const message = chatbox.value.trim();
-    if (!message) return;
-    socket.emit('message', {author: user, message});
+    const text = chatbox.value.trim();
+    if (!text) return;
+    socket.emit('message', {author: user, text});
     chatbox.value = '';
     chatbox.focus()
   });
 
   chatbox.addEventListener('keyup', (event) => {
     if (event.key === 'Enter') {
-      const message = chatbox.value.trim();
-      if (!message) return;
-      socket.emit('message', {author: user, message});
+      const text = chatbox.value.trim();
+      if (!text) return;
+      socket.emit('message', {author: user, text});
       chatbox.value = '';
       chatbox.focus()
     }
@@ -97,8 +97,11 @@ Swal.fire({
   socket.on('message', (message) => {
     const messagesList = document.getElementById('messages');
     const msgElem = document.createElement('div');
+    const timestamp = new Date(message.timestamp).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'});
     msgElem.className = 'message';
-    msgElem.innerHTML = message.author === 'iugmali-webchat-server' ? `<span class="system">${message.message}</span>` : `<strong>${message.author}:</strong> ${message.message}`;
+    msgElem.innerHTML = message.author === 'iugmali-webchat-server'
+      ? `<span class="system">${timestamp}: ${message.text}</span>`
+      : `<strong>${timestamp} ${message.author}:</strong> ${message.text}`;
     messagesList.appendChild(msgElem);
     messagesList.scrollTop = messagesList.scrollHeight;
   });
