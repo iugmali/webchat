@@ -38,14 +38,16 @@ app.use(express.json());
 app.use(express.static(join(__dirname, 'public')));
 
 io.on('connection', (socket) => {
+
   socket.on('join', (username: string) => {
     message = {author: 'iugmali-webchat-server', text: `${username} entrou na sala`, timestamp: new Date()};
     socket.broadcast.emit('message', message);
     socket.broadcast.emit('join', username);
     users.add({id: socket.id, username: username});
-    const usersQty = io.engine.clientsCount
+    const usersQty = io.engine.clientsCount;
     io.emit('usersQty', usersQty);
   });
+
   socket.on('message', (userMessage: Message) => {
     const word = censorWord(userMessage.text);
     if (word.censored) {
@@ -54,10 +56,11 @@ io.on('connection', (socket) => {
     } else {
       message = {author: userMessage.author, text: userMessage.text, timestamp: new Date()};
     }
-    const usersQty = io.engine.clientsCount
+    const usersQty = io.engine.clientsCount;
     io.emit('usersQty', usersQty);
     io.emit('message', message);
   });
+
   socket.on('disconnect', () => {
     const user = Array.from(users).find(user => user.id === socket.id);
     if (user) {
@@ -65,7 +68,7 @@ io.on('connection', (socket) => {
       io.emit('message', message);
       users.delete(user);
     }
-    const usersQty = io.engine.clientsCount
+    const usersQty = io.engine.clientsCount;
     io.emit('usersQty', usersQty);
   });
 });
