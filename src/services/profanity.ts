@@ -1,7 +1,6 @@
 import wordlist from '../lib/data/bad-words.js';
 
 type Configuration = {
-  level?: number;
   enabled?: boolean;
   placeHolder?: string;
   replaceRegex?: RegExp;
@@ -16,7 +15,6 @@ class Profanity {
 
   constructor(inputStr: string = '', config?: Configuration) {
     const configDefaults: Configuration = {
-      level: 1,
       enabled: true,
       placeHolder: '*',
       replaceRegex: /[\w\-À-ž]/g,
