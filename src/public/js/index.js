@@ -101,7 +101,7 @@ Swal.fire({
     msgElem.className = 'message';
     msgElem.innerHTML = message.author === 'iugmali-webchat-server'
       ? `<span class="system">${timestamp}: ${message.text}</span>`
-      : `<strong>${timestamp} ${message.author}:</strong> ${message.text}`;
+      : `<strong>${timestamp} - ${message.author}:</strong> ${message.text}`;
     messagesList.appendChild(msgElem);
     messagesList.scrollTop = messagesList.scrollHeight;
   });
