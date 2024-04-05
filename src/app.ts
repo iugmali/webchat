@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { createServer } from 'node:http';
@@ -32,6 +33,7 @@ app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', join(__dirname, 'views'));
 
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
