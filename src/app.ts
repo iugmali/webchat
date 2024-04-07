@@ -63,7 +63,7 @@ io.on('connection', (socket) => {
     io.emit('message', message);
   });
 
-  socket.on('disconnect', () => {
+  function onLeave() {
     const user = Array.from(users).find(user => user.id === socket.id);
     if (user) {
       message = {author: 'iugmali-webchat-server', text: `${user.username} saiu da sala`, timestamp: new Date()};
@@ -72,6 +72,13 @@ io.on('connection', (socket) => {
     }
     const usersQty = io.engine.clientsCount;
     io.emit('usersQty', usersQty);
+  }
+
+  socket.on('leave', () => {
+    onLeave();
+  });
+  socket.on('disconnect', () => {
+    onLeave()
   });
 });
 
