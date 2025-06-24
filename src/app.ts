@@ -67,7 +67,7 @@ io.on('connection', (socket) => {
     const user = Array.from(users).find(user => user.id === socket.id);
     if (user) {
       message = {author: 'iugmali-webchat-server', text: `${user.username} saiu da sala`, timestamp: new Date()};
-      io.emit('message', message);
+      socket.broadcast.emit('message', message);
       users.delete(user);
     }
     const usersQty = io.engine.clientsCount;
